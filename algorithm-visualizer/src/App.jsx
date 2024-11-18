@@ -5,7 +5,7 @@ import { bubbleSort } from "./algorithms/sorting/bubbleSort";
 import './App.css'
 
 function App() {
-  const [data, setData] = useState([50, 30, 70, 20, 90, 10]);
+  const [data, setData] = useState([]);
   return (
       <div>
           <h1>Algorithm Visualizer</h1>

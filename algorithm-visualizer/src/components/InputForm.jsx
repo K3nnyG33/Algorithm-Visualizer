@@ -21,7 +21,7 @@ function InputForm({ onSubmit }) {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Enter numbers separated by commas"
             />
-            <button type="submit">Visualize</button>
+            <button type="submit">Enter Array</button>
         </form>
     );
 }
