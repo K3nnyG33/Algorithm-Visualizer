@@ -21,12 +21,12 @@ function Visualizer({ algorithm, data }) {
         if (step.type === "active") {
           const [i, j] = step.indices;
           console.log(step.indices);
-          highlightBars(bars, [i, j], "active");
+          highlightBars([i, j], "active");
           await sleep(300); // Delay for visualization
-          clearHighlights(bars, [i, j], "active");
+          clearHighlights([i, j], "active");
         } else if (step.type === "sorted") {
           const [i, j] = step.indices;
-          highlightBars(bars, [i, j], "sorted");
+          highlightBars([i, j], "sorted");
           await sleep(300); // Delay for visualization
           setVisualData((prevData) => {
             const newData = [...prevData];
@@ -35,7 +35,7 @@ function Visualizer({ algorithm, data }) {
           });
           highlightBars(step.indices,"sorted");
           await sleep(300);
-          clearHighlights(bars, [i, j], "sorted");
+          clearHighlights([i, j], "sorted");
         }
       }
   
@@ -56,7 +56,6 @@ function Visualizer({ algorithm, data }) {
   
     const clearHighlights = (indices, className) => {
       const bars = document.querySelectorAll(".bar");
-      console.log("Hightlights are being cleared");
       indices.forEach((index) => {
         const bar = bars[index]; // Get the specific bar
         if (bar) {

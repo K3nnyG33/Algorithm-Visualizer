@@ -1,22 +1,26 @@
-export function* bubbleSort(arr, n){
-    var i, j, temp;
-    var swapped;
-    for (i = 0; i < n - 1; i++){
-        swapped = false;
-        for (j = 0; j < n - i - 1; j++){
-            yield { type: "active", indices: [i, i + 1] };
-            if (arr[j] > arr[j + 1]) {
-                // Swap arr[j] and arr[j+1]
-                temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
-                swapped = true;
-                yield { type: "swap", indices: [i, i + 1] };
-            }
+export function* bubbleSort(arr) {
+    let n = arr.length;
+    for (let i = 0; i < n - 1; i++) {
+      let swapped = false;
+  
+      for (let j = 0; j < n - i - 1; j++) {
+        // Highlight the bars being compared
+        yield { type: "active", indices: [j, j + 1] };
+  
+        if (arr[j] > arr[j + 1]) {
+          // Swap arr[j] and arr[j+1]
+          [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
+          swapped = true;
+  
+          // Yield the swap step
+          yield { type: "sorted", indices: [j, j + 1], array: [...arr] };
         }
-        if(swapped == false){
-            break;
-        }
+      }
+  
+      // After each outer loop, mark the last sorted element
+      yield { type: "sorted", indices: [n - i - 1] };
+  
+      if (!swapped) break;
     }
     return arr;
-}
+  }
