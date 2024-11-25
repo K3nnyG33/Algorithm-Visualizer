@@ -10,9 +10,9 @@ function Visualizer({ algorithm, data }) {
     }, [data]);
   
     const runAlgorithm = async () => {
+      console.log("Algorithm has run");
       if (isRunning) return; // Prevent multiple runs
       setIsRunning(true);
-      console.log("Algorithm Started");
   
       const generator = algorithm([...visualData]); // Create generator instance
       for (const step of generator) {
@@ -20,19 +20,22 @@ function Visualizer({ algorithm, data }) {
   
         if (step.type === "active") {
           const [i, j] = step.indices;
+          console.log(step.indices);
           highlightBars(bars, [i, j], "active");
           await sleep(300); // Delay for visualization
           clearHighlights(bars, [i, j], "active");
-        } else if (step.type === "swap") {
+        } else if (step.type === "sorted") {
           const [i, j] = step.indices;
-          highlightBars(bars, [i, j], "swap");
+          highlightBars(bars, [i, j], "sorted");
           await sleep(300); // Delay for visualization
           setVisualData((prevData) => {
             const newData = [...prevData];
             [newData[i], newData[j]] = [newData[j], newData[i]]; // Swap in state
             return newData;
           });
-          clearHighlights(bars, [i, j], "swap");
+          highlightBars(step.indices,"sorted");
+          await sleep(300);
+          clearHighlights(bars, [i, j], "sorted");
         }
       }
   
@@ -41,15 +44,24 @@ function Visualizer({ algorithm, data }) {
   
     const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
   
-    const highlightBars = (bars, indices, className) => {
+    const highlightBars = (indices, className) => {
+      const bars = document.querySelectorAll(".bar"); // Select all bars
       indices.forEach((index) => {
-        bars[index]?.classList.add(className);
+        const bar = bars[index]; // Get the specific bar
+        if (bar) {
+          bar.classList.add(className); // Add the class (e.g., "active" or "swap")
+        }
       });
     };
   
-    const clearHighlights = (bars, indices, className) => {
+    const clearHighlights = (indices, className) => {
+      const bars = document.querySelectorAll(".bar");
+      console.log("Hightlights are being cleared");
       indices.forEach((index) => {
-        bars[index]?.classList.remove(className);
+        const bar = bars[index]; // Get the specific bar
+        if (bar) {
+          bar.classList.remove(className);
+        }
       });
     };
   
